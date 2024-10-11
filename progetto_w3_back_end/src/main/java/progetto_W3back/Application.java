@@ -1,50 +1,67 @@
 package progetto_W3back;
 
+import dao.CatalogoBibliograficoDao;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
-import progetto_W3back.entities.*;
+import progetto_W3back.entities.Rivista;
 
-import java.time.LocalDate;
+import java.util.List;
+import java.util.UUID;
 
 public class Application {
 
     public static void main(String[] args) {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("progetto_catalogo_bibliografico");
         EntityManager em = emf.createEntityManager();
+
+        CatalogoBibliograficoDao dao = new CatalogoBibliograficoDao(em);
+
         em.getTransaction().begin();
+//
+//        Libro libro = new Libro("Peppone", 1949, 328);
+//        libro.setGenere("Cartoon");
+//        libro.setAutore("Paperone");
+//        em.persist(libro);
+//
+////         //aggiungo utente
+//        Utente nuovoUtente = new Utente("Giovani", "Verdi", LocalDate.of(1992, 3, 10));
+//        dao.aggiungoElemento(nuovoUtente);
+//
+//
+        UUID codice1ISBN = UUID.fromString("cd2be1e7-49d3-4240-86d0-c94eee2c7984");
 
-        Utente utente1 = new Utente("Mario", "Rossi", LocalDate.of(1990, 1, 1));
-        em.persist(utente1);
-        Utente utente2 = new Utente("Giulia", "Bianchi", LocalDate.of(1985, 5, 15));
-        em.persist(utente2);
+        try {
+            dao.rimuovoLibro(codice1ISBN);
+            System.out.println("Libro rimosso con successo.");
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
 
-        Libro libro1 = new Libro("Il Signore degli anelli", 1954, 1200);
-        Libro libro2 = new Libro("1984", 1949, 328);
-        libro1.setGenere("Fantasy");
-        libro1.setAutore("J.R.R. Tolkien");
+        //cerco un elemento(rivista)
+        UUID codiceISBN = UUID.fromString("8144896a-97dc-435e-baea-5f77ceb0ab1d");
 
-        libro2.setGenere("Distopia");
-        libro2.setAutore("George Orwell");
+        try {
+            Rivista trovata = dao.cercoByISBN(codiceISBN);
+            if (trovata != null) {
+                System.out.println("Rivista trovata: " + trovata.getTitolo() + ", Periodicità: " + trovata.getPeriodicita());
+            }
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
 
-        em.persist(libro1);
-        em.persist(libro2);
+        // cerco riviste per anno di pubblicazione
+        int annoPubblicazione = 2024;
+        List<Rivista> riviste = dao.cercoPerAnnoPubblicazione(annoPubblicazione);
+        for (Rivista rivista : riviste) {
+            System.out.println("Rivista:" + rivista.getTitolo() + "Anno :" + rivista.getAnnoPubblicazione());
 
-        Rivista rivista1 = new Rivista("National Geographic", 2024, 100, Periodicita.MENSILE);
-        Rivista rivista2 = new Rivista("Time", 2024, 80, Periodicita.SETTIMANALE);
-        em.persist(rivista1);
-        em.persist(rivista2);
-
-        Prestito prestito1 = new Prestito(utente1, libro1, LocalDate.now(), LocalDate.now().plusDays(30), null);
-        Prestito prestito2 = new Prestito(utente2, libro2, LocalDate.now(), LocalDate.now().plusDays(30), null);
-        em.persist(prestito1);
-        em.persist(prestito2);
+        }
 
 
         em.getTransaction().commit();
+
         em.close();
         emf.close();
     }
-
-
 }
