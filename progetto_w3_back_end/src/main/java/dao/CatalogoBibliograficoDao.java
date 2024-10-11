@@ -23,19 +23,19 @@ public class CatalogoBibliograficoDao {
     }
 
     //Rimuovo un elemento
-    public void rimuovoLibro(UUID codiceISBN) {
+    public void rimuovoLibro(UUID codiceISBN) throws Exception {
         Libro libro = em.find(Libro.class, codiceISBN);
         if (libro == null) {
-            throw new IllegalArgumentException("Libro non trovato per ISBN: " + codiceISBN);
+            throw new Exception("Libro non trovato per ISBN: " + codiceISBN);
         }
         em.remove(libro);
     }
 
     //Ricerca rivista
-    public Rivista cercoByISBN(UUID codiceISBN) {
+    public Rivista cercoByISBN(UUID codiceISBN) throws Exception {
         Rivista trovata = em.find(Rivista.class, codiceISBN);
         if (trovata == null) {
-            throw new IllegalArgumentException("Rivista non trovata per ISBN: " + codiceISBN);
+            throw new Exception("Rivista non trovata per ISBN: " + codiceISBN);
         }
         return trovata;
     }
