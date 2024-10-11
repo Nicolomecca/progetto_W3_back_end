@@ -36,7 +36,7 @@ public class Prestito {
         this.dataRestituzioneEffettiva = dataRestituzioneEffettiva;
     }
 
-    public UUID getPresito_id() {
+    public UUID getPrestito_id() {
         return prestito_id;
     }
 

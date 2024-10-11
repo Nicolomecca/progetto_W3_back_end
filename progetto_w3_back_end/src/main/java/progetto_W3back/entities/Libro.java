@@ -14,8 +14,8 @@ public class Libro extends Elemento {
 
     }
 
-    public Libro(String titolo, int annoPubblicazione, int numeroPaagine) {
-        super(titolo, annoPubblicazione, numeroPaagine);
+    public Libro(String titolo, int annoPubblicazione, int numeroPagine) {
+        super(titolo, annoPubblicazione, numeroPagine);
     }
 
     public String getAutore() {

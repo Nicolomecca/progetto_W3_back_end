@@ -13,16 +13,19 @@ public abstract class Elemento {
     private UUID codiceISBN;
     private String titolo;
     private int annoPubblicazione;
-    private int numeroPaagine;
+    private int numeroPagine;
+
+    @OneToOne(mappedBy = "elementoPrestato")
+    private Prestito prestito;
 
     public Elemento() {
 
     }
 
-    public Elemento(String titolo, int annoPubblicazione, int numeroPaagine) {
+    public Elemento(String titolo, int annoPubblicazione, int numeroPagine) {
         this.titolo = titolo;
         this.annoPubblicazione = annoPubblicazione;
-        this.numeroPaagine = numeroPaagine;
+        this.numeroPagine = numeroPagine;
     }
 
     public UUID getCodiceISBN() {
@@ -49,12 +52,20 @@ public abstract class Elemento {
         this.annoPubblicazione = annoPubblicazione;
     }
 
-    public int getNumeroPaagine() {
-        return numeroPaagine;
+    public int getNumeroPagine() {
+        return numeroPagine;
     }
 
-    public void setNumeroPaagine(int numeroPaagine) {
-        this.numeroPaagine = numeroPaagine;
+    public void setNumeroPagine(int numeroPagine) {
+        this.numeroPagine = numeroPagine;
+    }
+
+    public Prestito getPrestito() {
+        return prestito;
+    }
+
+    public void setPrestito(Prestito prestito) {
+        this.prestito = prestito;
     }
 
     @Override
@@ -63,7 +74,7 @@ public abstract class Elemento {
                 "codiceISBN=" + codiceISBN +
                 ", titolo='" + titolo + '\'' +
                 ", annoPubblicazione=" + annoPubblicazione +
-                ", numeroPaagine=" + numeroPaagine +
+                ", numeroPaagine=" + numeroPagine +
                 '}';
     }
 }
