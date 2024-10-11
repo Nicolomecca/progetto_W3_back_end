@@ -48,6 +48,10 @@ public class CatalogoBibliograficoDao {
     }
 
     // Ricerca per autore
-    public List <Libro> cercoPerAutore
+    public List<Libro> cercoPerAutore(String autore) {
+        TypedQuery<Libro> query = em.createQuery("SELECT l FROM Libro l WHERE l.autore = :autore", Libro.class);
+        query.setParameter("autore", autore);
+        return query.getResultList();
+    }
 }
 
